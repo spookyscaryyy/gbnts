@@ -1,14 +1,16 @@
 #ifndef _GBNTS_H
 #define _GBNTS_H
 
+/* Includes */
+#include <stdint.h>
+
 /* Macros/Definitions */
-#define CLASS_NAME_MAX 10
+#define PRINT_ALL_HELP 0
 
 /* Data Structures */
-typedef struct {
-    char className[10];
-} CLASS_WORK_T;
 
 /* Globals */
+
+/* Functions */
 
 #endif
