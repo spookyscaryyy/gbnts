@@ -15,4 +15,7 @@ typedef int32_t SCODE;
 #define SCODE_OK 0
 #define SCODE_GEN_FAIL -1
 
+/* Functions */
+int handleScode(SCODE code);
+
 #endif
