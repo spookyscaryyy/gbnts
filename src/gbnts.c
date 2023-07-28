@@ -1,20 +1,44 @@
+/* C Includes */
 #include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+
+/* Project Includes */
 #include "gbnts.h"
 #include "scodes.h"
+#include "utils.h"
+
+/* Globals */
+const char* COMMAND_LIST[COMMAND_LIST_SIZE] =
+{"ls", "a", "r", "e", "h", "t", "p"};
 
 void showFolderHelp()
 {
-
+    printf("gbnts [folder cmd] {folder args}\n"
+            "folder cmds:\n"
+            "    ls - lists all available folders\n"
+            "    a  - creates a new folder with a given name\n"
+            "    r  - removes a folder by it's ID or name\n"
+            "    e  - edit a folder's name by it's ID or name\n");
 }
 
 void showNoteHelp()
 {
-
+    printf("gbnts [folder name] {note cmd}\n"
+            "note cmds:\n"
+            "    ls - lists all notes in folder, also if no note cmd given\n"
+            "    a  - creates a new note with it's given fields\n"
+            "    r  - removes a note by it's ID\n"
+            "    e  - edit a note by it's ID\n");
 }
 
 void showCommandHelp()
 {
-
+    printf("gbnts [cmd] {help}\n"
+            "cmds:\n"
+            "    h  - shows all help or the selected help\n"
+            "    t  - lists all possible note types and their fields\n"
+            "    p  - removes all empty folders\n");
 }
 
 void showHelp(uint8_t which)
@@ -37,46 +61,43 @@ void showHelp(uint8_t which)
         default:
             printf("Showing full help menu\n");
             showCommandHelp();
+            printf("\n");
             showFolderHelp();
+            printf("\n");
             showNoteHelp();
             break;
     }
 }
 
-SCODE handleOneArg(char** argv)
+SCODE parseArgs(CMD_ARG* args, char** argv, int argc)
 {
+    for (int i = 1; i < argc; i++)
+    {
+        const char* ARG = argv[i];
+        printf("arg %d: %s\n", i, ARG);
+    }
     return SCODE_OK;
 }
 
-SCODE handleTwoArgs(char** argv)
-{
-    return SCODE_OK;
-}
-
-SCODE handleThreeArgs(char** argv)
-{
-    return SCODE_OK;
-}
-
-/* Main function picks arg parse function based on arg amount */
 int main(int argc, char** argv)
 {
     SCODE status = SCODE_OK;
-    switch(argc)
+    CMD_ARG* args = NULL;
+    if (1 == argc)
     {
-        case(1):
-            showHelp(PRINT_ALL_HELP);
-            break;
-        case(2):
-            status = handleOneArg(argv);
-            break;
-        case(3):
-            status = handleTwoArgs(argv);
-            break;
-        case(4):
-            status = handleThreeArgs(argv);
-            break;
+        showHelp(PRINT_ALL_HELP);
+        return handleScode(status);
     }
 
+    NEWN(args, argc - 1);
+    status = parseArgs(args, argv, argc);
+    if(FAILED(status))
+    {
+        return handleScode(status);
+    }
+
+
+
+    DEL(args);
     return handleScode(status);
 }

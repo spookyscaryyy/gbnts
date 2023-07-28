@@ -2,17 +2,32 @@
 #define _GBNTS_H
 
 /* Includes */
-#include <stdint.h>
 
 /* Macros/Definitions */
-#define PRINT_ALL_HELP 0
-#define PRINT_COMMAND_HELP 1
-#define PRINT_NOTE_HELP 2
-#define PRINT_FOLDER_HELP 3
+#define PRINT_ALL_HELP      'a'
+#define PRINT_COMMAND_HELP  'c'
+#define PRINT_NOTE_HELP     'n'
+#define PRINT_FOLDER_HELP   'f'
+
+#define COMMAND_LIST_SIZE   7
+#define LIST_COMMAND        0
+#define ADD_COMMAND         1
+#define REMOVE_COMMAND      2
+#define EDIT_COMMAND        3
+#define HELP_COMMAND        4
+#define TYPE_COMMAND        5
+#define PRUNE_COMMAND       6
 
 /* Data Structures */
-
-/* Globals */
+typedef enum {
+    ls = 0,
+    a  = 1,
+    r  = 2,
+    e  = 3,
+    h  = 4,
+    t  = 5,
+    p  = 6
+} CMD_ARG;
 
 /* Functions */
 
