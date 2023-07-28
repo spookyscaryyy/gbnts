@@ -9,8 +9,8 @@
 #include "utils.h"
 
 /* Globals */
-const char* COMMAND_LIST[COMMAND_LIST_SIZE] =
-{"ls", "a", "r", "e", "h", "t", "p"};
+const char* COMMAND_LIST[] =
+{"-ls", "-a", "-r", "-e", "-h", "-t", "-p"};
 
 void showFolderHelp()
 {
@@ -69,12 +69,33 @@ void showHelp(uint8_t which)
     }
 }
 
+CMD_ARG detCommand(const char* ARG)
+{
+    for (int i = 0; i < ARR_SIZE(COMMAND_LIST); i++)
+    {
+        if (0 == strcmp(COMMAND_LIST[i], ARG))
+        {
+            return (CMD_ARG)i;
+        }
+    }
+    return BAD;
+}
+
+bool isCommand(CMD_ARG arg)
+{
+    return (arg < ARR_SIZE(COMMAND_LIST));
+}
+
 SCODE parseArgs(CMD_ARG* args, char** argv, int argc)
 {
+    args[0] = NAME;
     for (int i = 1; i < argc; i++)
     {
         const char* ARG = argv[i];
-        printf("arg %d: %s\n", i, ARG);
+        if (COMMAND_SPECIFIER == ARG[0])
+        {
+            args[i] = detCommand(ARG);
+        }
     }
     return SCODE_OK;
 }
@@ -89,7 +110,7 @@ int main(int argc, char** argv)
         return handleScode(status);
     }
 
-    NEWN(args, argc - 1);
+    NEWN(args, argc);
     status = parseArgs(args, argv, argc);
     if(FAILED(status))
     {

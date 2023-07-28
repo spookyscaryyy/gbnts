@@ -9,7 +9,7 @@
 #define PRINT_NOTE_HELP     'n'
 #define PRINT_FOLDER_HELP   'f'
 
-#define COMMAND_LIST_SIZE   7
+#define COMMAND_SPECIFIER   '-'
 #define LIST_COMMAND        0
 #define ADD_COMMAND         1
 #define REMOVE_COMMAND      2
@@ -20,13 +20,17 @@
 
 /* Data Structures */
 typedef enum {
-    ls = 0,
-    a  = 1,
-    r  = 2,
-    e  = 3,
-    h  = 4,
-    t  = 5,
-    p  = 6
+    LIST  = 0,
+    ADD   = 1,
+    REM   = 2,
+    EDIT  = 3,
+    HELP  = 4,
+    TYPE  = 5,
+    PRUN  = 6,
+    NAME  = 100,
+    BAD   = 101,
+    FOLD  = 102,
+
 } CMD_ARG;
 
 /* Functions */
