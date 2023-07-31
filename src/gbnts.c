@@ -254,6 +254,10 @@ int main(int argc, char** argv)
     {
         showNotes(folder);
     }
+    else if (newNoteIndex > 0)
+    {
+        addFolder(folder);
+    }
 
 
     DEL(folder);
