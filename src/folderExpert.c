@@ -6,7 +6,7 @@
 
 bool isFolder(const char* folder)
 {
-    bool ret = false;
+    bool ret = true;
     return ret;
 }
 

@@ -74,19 +74,24 @@ void showHelp(uint8_t which)
 
 CMD_ARG detCommand(const char* ARG)
 {
+    /* look through each command and try to find which this is */
     for (int i = 0; i < ARR_SIZE(COMMAND_LIST); i++)
     {
+        /* selected command matches argument */
         if (0 == strcmp(COMMAND_LIST[i], ARG))
         {
             return (CMD_ARG)i;
         }
     }
+
+    /* whatever it is, it is not a command */
     return NOCMD;
 }
 
 void handleStartState(SCODE* status, PARSE* state,
         CMD_ARG cmd, char* folder, const char* ARG)
 {
+    /* if this is a folder than we are dealing with a note command */
     if (isFolder(ARG))
     {
         NEWN(folder, strlen(ARG)+1);
@@ -94,6 +99,8 @@ void handleStartState(SCODE* status, PARSE* state,
         *state = NOTE_CMD;
         return;
     }
+
+    /* either one of the normal commands, folder command, or invalid */
     switch(cmd)
     {
         case(HELP):
@@ -123,24 +130,30 @@ void handleStartState(SCODE* status, PARSE* state,
 int main(int argc, char** argv)
 {
     SCODE status = SCODE_OK;
+
+    /* print help if there was no arguments given */
     if (1 == argc)
     {
         showHelp(PRINT_ALL_HELP);
         return handleScode(status);
     }
 
-    PARSE state = START;
-    CMD_ARG cmd = NOCMD;
-    char* folder = NULL;
-    char* type = NULL;
-    char* field = NULL;
-    uint32_t noteID = 0;
-    int newNoteIndex = -1;
+    /* variables used in parsing */
+    PARSE state = START;    // state machine variable
+    CMD_ARG cmd = NOCMD;    // current argument (if it is one)
+    char* folder = NULL;    // folder name
+    char* type = NULL;      // note type name
+    char* field = NULL;     // note field name
+    uint32_t noteID = 0;    // note ID
+    int newNoteIndex = -1;  // mark remaining args as fields
+
+    /* argument parse loop */
     for (int i = 1; i < argc; i++)
     {
         const char* ARG = argv[i];
         cmd = detCommand(ARG);
 
+        /* argument parse state machine */
         switch(state)
         {
             case(START):
@@ -154,6 +167,7 @@ int main(int argc, char** argv)
                 status = TOO_MANY_ARGS;
                 state = FAILED;
                 break;
+
             case(NOTE_CMD):
                 switch(cmd)
                 {
@@ -175,20 +189,17 @@ int main(int argc, char** argv)
                         state = FAILED;
                 }
                 break;
+
             case(NOTE_ADD):
-                if (isNoteType(ARG))
-                {
-                    NEWN(type, strlen(ARG)+1);
-                    strcpy(type, ARG);
-                    state = NOTE_ADD_TYPE;
-                    break;
-                }
-                state = FAILED;
+                NEWN(type, strlen(ARG)+1);
+                strcpy(type, ARG);
+                state = NOTE_ADD_TYPE;
                 break;
             case(NOTE_ADD_TYPE):
                 newNoteIndex = i;
                 state = SUCCESS;
                 break;
+
             case(NOTE_REMOVE):
                 noteID = atoi(ARG);
                 state = NOTE_REMOVE_ID;
@@ -197,6 +208,7 @@ int main(int argc, char** argv)
                 status = removeNote(folder, noteID);
                 state = SUCCESS;
                 break;
+
             case(NOTE_EDIT):
                 noteID = atoi(ARG);
                 state = NOTE_EDIT_ID;
@@ -210,14 +222,17 @@ int main(int argc, char** argv)
                 status = editNote(noteID, field, ARG);
                 state = SUCCESS;
                 break;
+
             case(FOLDER_ADD):
                 status = addFolder(ARG);
                 state = SUCCESS;
                 break;
+
             case(FOLDER_REMOVE):
                 status = removeFolder(ARG);
                 state = SUCCESS;
                 break;
+
             case(FOLDER_EDIT):
                 NEWN(folder, strlen(ARG)+1);
                 strcpy(folder, ARG);
@@ -227,6 +242,7 @@ int main(int argc, char** argv)
                 status = editFolder(folder, ARG);
                 state = SUCCESS;
                 break;
+
             case(SUCCESS):
             case(FAILED):
                 // do nothing
@@ -234,6 +250,7 @@ int main(int argc, char** argv)
         }
     }
 
+    /* some commands utilize a leftover state */
     if (HELP_CMD == state)
     {
         showHelp(PRINT_ALL_HELP);
@@ -260,6 +277,7 @@ int main(int argc, char** argv)
     }
 
 
+    /* DEL handles if they were never allocated */
     DEL(folder);
     DEL(type);
     DEL(field);

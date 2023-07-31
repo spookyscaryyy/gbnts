@@ -17,7 +17,7 @@ void showNotes(const char* folder)
 
 bool isNoteType(const char* type)
 {
-    bool ret = false;
+    bool ret = true;
     return ret;
 }
 
