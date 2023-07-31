@@ -10,13 +10,6 @@
 #define PRINT_FOLDER_HELP   'f'
 
 #define COMMAND_SPECIFIER   '-'
-#define LIST_COMMAND        0
-#define ADD_COMMAND         1
-#define REMOVE_COMMAND      2
-#define EDIT_COMMAND        3
-#define HELP_COMMAND        4
-#define TYPE_COMMAND        5
-#define PRUNE_COMMAND       6
 
 /* Data Structures */
 typedef enum {
@@ -27,11 +20,29 @@ typedef enum {
     HELP  = 4,
     TYPE  = 5,
     PRUN  = 6,
-    NAME  = 100,
-    BAD   = 101,
-    FOLD  = 102,
+    NOCMD  = 101,
 
 } CMD_ARG;
+
+typedef enum {
+    START,
+    FAILED,
+    SUCCESS,
+    HELP_CMD,
+    NORM_CMD,
+    FOLDER_ADD,
+    FOLDER_REMOVE,
+    FOLDER_EDIT,
+    FOLDER_EDIT_NAME,
+    NOTE_CMD,
+    NOTE_ADD,
+    NOTE_ADD_TYPE,
+    NOTE_REMOVE,
+    NOTE_REMOVE_ID,
+    NOTE_EDIT,
+    NOTE_EDIT_ID,
+    NOTE_EDIT_FIELD,
+} PARSE;
 
 /* Functions */
 

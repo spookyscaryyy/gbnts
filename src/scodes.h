@@ -13,7 +13,10 @@ typedef int32_t SCODE;
 
 /* SCODEs */
 #define SCODE_OK 0
-#define SCODE_GEN_FAIL -1
+#define SCODE_GEN_FAIL                      -1
+#define TOO_MANY_ARGS                       -2
+#define UNRECOGNIZED_COMMAND                -3
+#define UNRECOGNIZED_NOTE_COMMAND           -4
 
 /* Functions */
 int handleScode(SCODE code);
