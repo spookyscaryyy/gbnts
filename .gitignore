@@ -1,2 +1,8 @@
-build/
-.ccls-cache/
+*
+!*.c
+!*.h
+!src/
+!*.MD
+!LICENSE
+!Makefile
+!.gitignore
