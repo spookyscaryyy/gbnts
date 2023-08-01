@@ -44,6 +44,13 @@ typedef enum {
     NOTE_EDIT_FIELD,
 } PARSE;
 
+typedef struct {
+    PARSE state;
+    CMD_ARG cmd;
+    const char* folder;
+    int noteIndex;
+} LEFTOVER_DATA;
+
 /* Functions */
 
 #endif

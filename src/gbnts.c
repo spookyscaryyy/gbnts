@@ -121,22 +121,51 @@ void handleStartState(SCODE* status, PARSE* state,
             *state = NORM_CMD;
             break;
         case(NOCMD):
-            *status = UNRECOGNIZED_COMMAND;
+            *status = ENCODE(GBNTS_MAIN, UNRECOGNIZED_COMMAND);
             *state = FAILED;
             break;
     }
 }
 
-int main(int argc, char** argv)
+SCODE handleLeftovers(LEFTOVER_DATA* data)
 {
     SCODE status = SCODE_OK;
+    if (!data)
+    {
+        return ENCODE(GBNTS_MAIN, NULL_POINTER_DEREF);
+    }
 
-    /* print help if there was no arguments given */
-    if (1 == argc)
+    /* some commands utilize a leftover state */
+    if (HELP_CMD == data->state)
     {
         showHelp(PRINT_ALL_HELP);
-        return handleScode(status);
     }
+    else if (NORM_CMD == data->state && TYPE == data->cmd)
+    {
+        showNoteTypes();
+    }
+    else if (NORM_CMD == data->state && PRUN == data->cmd)
+    {
+        status = pruneFolders();
+    }
+    else if (NORM_CMD == data->state && LIST == data->cmd)
+    {
+        showFolders();
+    }
+    else if (NOTE_CMD == data->state)
+    {
+        showNotes(data->folder);
+    }
+    else if (data->noteIndex > 0)
+    {
+        addFolder(data->folder);
+    }
+    return status;
+}
+
+SCODE argumentParse(int argc, char** argv)
+{
+    SCODE status = SCODE_OK;
 
     /* variables used in parsing */
     PARSE state = START;    // state machine variable
@@ -164,7 +193,7 @@ int main(int argc, char** argv)
                 state = SUCCESS;
                 break;
             case(NORM_CMD):
-                status = TOO_MANY_ARGS;
+                status = ENCODE(GBNTS_MAIN, TOO_MANY_ARGS);
                 state = FAILED;
                 break;
 
@@ -185,7 +214,7 @@ int main(int argc, char** argv)
                         state = SUCCESS;
                         break;
                     default:
-                        status = UNRECOGNIZED_NOTE_COMMAND;
+                        status = ENCODE(GBNTS_MAIN, UNRECOGNIZED_NOTE_COMMAND);
                         state = FAILED;
                 }
                 break;
@@ -250,36 +279,28 @@ int main(int argc, char** argv)
         }
     }
 
-    /* some commands utilize a leftover state */
-    if (HELP_CMD == state)
-    {
-        showHelp(PRINT_ALL_HELP);
-    }
-    else if (NORM_CMD == state && TYPE == cmd)
-    {
-        showNoteTypes();
-    }
-    else if (NORM_CMD == state && PRUN == cmd)
-    {
-        status = pruneFolders();
-    }
-    else if (NORM_CMD == state && LIST == cmd)
-    {
-        showFolders();
-    }
-    else if (NOTE_CMD == state)
-    {
-        showNotes(folder);
-    }
-    else if (newNoteIndex > 0)
-    {
-        addFolder(folder);
-    }
 
 
     /* DEL handles if they were never allocated */
     DEL(folder);
     DEL(type);
     DEL(field);
+    return status;
+}
+
+int main(int argc, char** argv)
+{
+    SCODE status = SCODE_OK;
+    SCODE test = ENCODE(GBNTS_MAIN, SCODE_GEN_FAIL);
+    handleScode(test);
+
+    /* print help if there was no arguments given */
+    if (1 == argc)
+    {
+        showHelp(PRINT_ALL_HELP);
+        return handleScode(status);
+    }
+    status = argumentParse(argc, argv);
+
     return handleScode(status);
 }
