@@ -47,9 +47,12 @@ typedef enum {
 typedef struct {
     PARSE state;
     CMD_ARG cmd;
-    const char* folder;
+    char* folder;
+    char* type;
+    char* field;
+    int noteID;
     int noteIndex;
-} LEFTOVER_DATA;
+} PARSE_DATA;
 
 /* Functions */
 

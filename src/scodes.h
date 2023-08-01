@@ -7,16 +7,16 @@
 /* typedefs */
 typedef int32_t SCODE;
 
-/* SCODE structure 
- * [0-11]    code
- * [12-17]   FileID
- * [18-31]   LineNumber
+/* SCODE structure
+ * [20-31]   code
+ * [14-19]   FileID
+ * [0-13]    LineNumber
  */
 
 /* Macos/Definitions */
 #define SUCCESS(status) status >= 0
 #define FAILED(status) status < 0
-#define ENCODE(fileID,  scode) _buildCode(fileID, __LINE__, scode)
+#define ENCODE(fileID, scode) _buildCode(fileID, __LINE__, scode)
 
 /* SCODEs */
 #define SCODE_OK                            0
