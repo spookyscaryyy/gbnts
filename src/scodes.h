@@ -28,6 +28,7 @@ typedef int32_t SCODE;
 
 
 /* File IDs */
+#define TEST_FILE                           0
 #define GBNTS_MAIN                          1
 #define FOLDER_EXPERT                       2
 #define NOTES_EXPERT                        3
@@ -36,7 +37,7 @@ typedef int32_t SCODE;
 
 /* Functions */
 int handleScode(SCODE code);
-
+void decodeScode(uint8_t* fileID, uint16_t* lineNo, int16_t* scode, SCODE code);
 SCODE _buildCode(uint8_t fileID, uint16_t lineNo, int16_t scode);
 
 #endif

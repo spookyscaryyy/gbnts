@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -g -std=gnu11
+CFLAGS = -Wall -g -std=gnu11 --coverage
 CHECK = `pkg-config --cflags --libs check`
 
 INSTALL_PATH = /home/willbonner/.local/bin
@@ -22,7 +22,7 @@ src/%.o: src/%.c src/%.h
 test/%.o: test/%.c test/%.h
 	$(CC) $(CFLAGS) -c -o $@ $< $(CFLAGS)
 
-.PHONY: clean test
+.PHONY: clean test coverage
 
 install:
 	make
@@ -36,7 +36,19 @@ clean:
 	rm -f $(TBIN)
 	rm -f src/*.o
 	rm -f test/*.o
+	rm -f src/*.gcno
+	rm -f test/*.gcno
+	rm -f *.gcov
+	rm -f test/*.gcda
+	rm -f src/*.gch
+	rm -f src/*.gcda
 
 test: $(filter-out src/main.o, $(OBJS)) $(TOBJS)
 	$(CC) $(CFLAGS) $^ -o $(TBIN) $(CHECK)
 	./unit
+
+coverage:
+	make test
+	@echo ""
+	@echo "Coverage Report"
+	gcov $(filter-out src/main.c, $(wildcard src/*.c)) -m
