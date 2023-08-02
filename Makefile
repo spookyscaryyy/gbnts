@@ -9,16 +9,9 @@ TBIN = unit
 SRC_DIR = src
 TEST_DIR = test
 
-SOURCES := $(wildcard $(SRC_DIR)/*.c $(TEST_DIR)/*.c)
-SOURCES := $(notdir $(SOURCES))
-SOURCES := $(patsubst %.c,%.o, $(SOURCES))
-SOURCES := $(filter-out src/main.c, $(SOURCES))
-
 OBJS = $(patsubst src/%.c,src/%.o,$(wildcard src/*.c))
 TOBJS = $(patsubst test/%.c,test/%.o,$(wildcard test/*.c))
 
-TEST := $(patsubst %, $(OBJS), $(TOBJS))
-TEST := $(filter-out src/main.c, $(TEST))
 
 $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) src/*.o -o $(BIN)
@@ -44,6 +37,6 @@ clean:
 	rm -f src/*.o
 	rm -f test/*.o
 
-test: $(TEST)
+test: $(filter-out src/main.o, $(OBJS)) $(TOBJS)
 	$(CC) $(CFLAGS) $^ -o $(TBIN) $(CHECK)
 	./unit
