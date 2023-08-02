@@ -2,6 +2,7 @@
 #define _GBNTS_H
 
 /* Includes */
+#include "scodes.h"
 
 /* Macros/Definitions */
 #define PRINT_ALL_HELP      'a'
@@ -55,5 +56,11 @@ typedef struct {
 } PARSE_DATA;
 
 /* Functions */
+CMD_ARG detCommand(const char* ARG);
+SCODE handleStartState(PARSE_DATA* data, const char* ARG);
+SCODE handleLeftovers(PARSE_DATA* data);
+SCODE singleParseLoop(PARSE_DATA* data, const char* ARG);
+SCODE argumentParse(int argc, char** argv);
+void showHelp(uint8_t which);
 
 #endif

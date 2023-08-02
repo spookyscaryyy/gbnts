@@ -296,18 +296,3 @@ SCODE argumentParse(int argc, char** argv)
     DEL(dat.field);
     return status;
 }
-
-int main(int argc, char** argv)
-{
-    SCODE status = SCODE_OK;
-
-    /* print help if there was no arguments given */
-    if (1 == argc)
-    {
-        showHelp(PRINT_ALL_HELP);
-        return handleScode(status);
-    }
-    status = argumentParse(argc, argv);
-
-    return handleScode(status);
-}
