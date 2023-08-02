@@ -6,8 +6,19 @@ INSTALL_PATH = /home/willbonner/.local/bin
 BIN = gbnts
 TBIN = unit
 
+SRC_DIR = src
+TEST_DIR = test
+
+SOURCES := $(wildcard $(SRC_DIR)/*.c $(TEST_DIR)/*.c)
+SOURCES := $(notdir $(SOURCES))
+SOURCES := $(patsubst %.c,%.o, $(SOURCES))
+SOURCES := $(filter-out src/main.c, $(SOURCES))
+
 OBJS = $(patsubst src/%.c,src/%.o,$(wildcard src/*.c))
 TOBJS = $(patsubst test/%.c,test/%.o,$(wildcard test/*.c))
+
+TEST := $(patsubst %, $(OBJS), $(TOBJS))
+TEST := $(filter-out src/main.c, $(TEST))
 
 $(BIN): $(OBJS)
 	$(CC) $(CFLAGS) src/*.o -o $(BIN)
@@ -29,8 +40,10 @@ uninstall:
 
 clean:
 	rm -f $(BIN)
+	rm -f $(TBIN)
 	rm -f src/*.o
 	rm -f test/*.o
 
-test: $(TOBJS)
-	$(CC) $(CFLAGS) test/*.o -o $(TBIN) $(CHECK)
+test: $(TEST)
+	$(CC) $(CFLAGS) $^ -o $(TBIN) $(CHECK)
+	./unit
