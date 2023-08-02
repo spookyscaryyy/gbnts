@@ -21,6 +21,19 @@ START_TEST(testHandleScode)
     ck_assert(EXIT_FAILURE == handleScode(res));
     res = ENCODE(TEST_FILE, NULL_POINTER_DEREF);
     ck_assert(EXIT_FAILURE == handleScode(res));
+    res = ENCODE(TEST_FILE, -1234);
+    ck_assert(EXIT_FAILURE == handleScode(res));
+
+    res = ENCODE(GBNTS_MAIN, SCODE_GEN_FAIL);
+    ck_assert(EXIT_FAILURE == handleScode(res));
+    res = ENCODE(FOLDER_EXPERT, SCODE_GEN_FAIL);
+    ck_assert(EXIT_FAILURE == handleScode(res));
+    res = ENCODE(NOTES_EXPERT, SCODE_GEN_FAIL);
+    ck_assert(EXIT_FAILURE == handleScode(res));
+    res = ENCODE(SCODES_EXPERT, SCODE_GEN_FAIL);
+    ck_assert(EXIT_FAILURE == handleScode(res));
+    res = ENCODE(63, SCODE_GEN_FAIL);
+    ck_assert(EXIT_FAILURE == handleScode(res));
 }
 END_TEST
 
@@ -31,9 +44,9 @@ START_TEST(testBuildCode)
     uint8_t fileID = 0;
     int16_t scode = 0;
 
-    for (int i = 0; i <= SCODES_EXPERT; i++)
+    for (int i = 0; i <= 63; i++)
     {
-        for (int j = SCODE_OK; j >= NULL_POINTER_DEREF; j--)
+        for (int j = SCODE_OK; j >= -100; j--)
         {
             int correctLineNum = __LINE__ + 1;
             res = ENCODE(i, j);

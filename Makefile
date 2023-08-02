@@ -38,7 +38,6 @@ clean:
 	rm -f test/*.o
 	rm -f src/*.gcno
 	rm -f test/*.gcno
-	rm -f *.gcov
 	rm -f test/*.gcda
 	rm -f src/*.gch
 	rm -f src/*.gcda
@@ -49,6 +48,4 @@ test: $(filter-out src/main.o, $(OBJS)) $(TOBJS)
 
 coverage:
 	make test
-	@echo ""
-	@echo "Coverage Report"
-	gcov $(filter-out src/main.c, $(wildcard src/*.c)) -m
+	gcovr
