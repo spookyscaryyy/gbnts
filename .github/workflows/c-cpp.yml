@@ -11,9 +11,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: install libs
+    - name: Intall libs
       run: sudo apt-get install check
-    - name: make
+    - name: Build source
       run: make
-    - name: make test
+      
+  test:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Run Tests
       run: make test
+      
+  coverage:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    - name: Get Test Coverage
+      run: make coverage
