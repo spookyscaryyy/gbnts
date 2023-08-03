@@ -15,5 +15,3 @@ jobs:
       run: make
     - name: Run Tests
       run: make test
-    - name: Get Test Coverage
-      run: make coverage
