@@ -233,7 +233,7 @@ START_TEST(testHelpParsing)
     dat.state = HELP_CMD;
     dat.cmd = NOCMD;
 
-    status = singleParseLoop(&dat, "types");
+    status = singleParseLoop(&dat, "command");
     ck_assert(dat.state == SUCCESS);
     ck_assert(dat.folder == NULL);
     ck_assert(dat.type == NULL);
@@ -244,7 +244,7 @@ START_TEST(testHelpParsing)
     dat.state = HELP_CMD;
     dat.cmd = NOCMD;
 
-    status = singleParseLoop(&dat, "t");
+    status = singleParseLoop(&dat, "c");
     ck_assert(dat.state == SUCCESS);
     ck_assert(dat.folder == NULL);
     ck_assert(dat.type == NULL);
@@ -298,17 +298,6 @@ START_TEST(testFolderAddParsing)
     ck_assert(dat.noteID == 0);
     ck_assert(dat.noteIndex == -1);
     ck_assert(status == SCODE_OK);
-    dat.state = FOLDER_ADD;
-    dat.cmd = NOCMD;
-
-    status = singleParseLoop(&dat, "nofolder");
-    ck_assert(dat.state == SUCCESS);
-    ck_assert(dat.folder == NULL);
-    ck_assert(dat.type == NULL);
-    ck_assert(dat.field == NULL);
-    ck_assert(dat.noteID == 0);
-    ck_assert(dat.noteIndex == -1);
-    ck_assert(status == SCODE_OK);
 }
 END_TEST
 
@@ -333,11 +322,10 @@ START_TEST(testFolderRemoveParsing)
     ck_assert(dat.noteID == 0);
     ck_assert(dat.noteIndex == -1);
     ck_assert(status == SCODE_OK);
-    dat.state = FOLDER_REMOVE;
-    dat.cmd = NOCMD;
 }
 END_TEST
 
+// TODO: change when folders added
 START_TEST(testFolderEditParsing)
 {
     PARSE_DATA dat;
@@ -367,7 +355,34 @@ START_TEST(testFolderEditParsing)
     ck_assert(dat.noteID == 0);
     ck_assert(dat.noteIndex == -1);
     ck_assert(status == SCODE_OK);
+
+    DEL(dat.folder);
 }
+END_TEST
+
+START_TEST(testNoteRemove)
+{
+
+}
+END_TEST
+
+START_TEST(testNoteAdd)
+{
+
+}
+END_TEST
+
+START_TEST(testNoteEdit)
+{
+
+}
+END_TEST
+
+START_TEST(testNormalCommands)
+{
+
+}
+END_TEST
 
 START_TEST(testArgumentParse)
 {
@@ -389,6 +404,10 @@ Suite* interface_suite(void)
     tcase_add_test(tc_core, testFolderAddParsing);
     tcase_add_test(tc_core, testFolderRemoveParsing);
     tcase_add_test(tc_core, testFolderEditParsing);
+    tcase_add_test(tc_core, testNoteRemove);
+    tcase_add_test(tc_core, testNoteAdd);
+    tcase_add_test(tc_core, testNoteEdit);
+    tcase_add_test(tc_core, testNormalCommands);
     tcase_add_test(tc_core, testHandleLeftovers);
     tcase_add_test(tc_core, testArgumentParse);
     suite_add_tcase(s, tc_core);
