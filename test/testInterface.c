@@ -167,11 +167,207 @@ START_TEST(testHandleLeftovers)
 }
 END_TEST
 
-START_TEST(testSingleParseLoop)
+START_TEST(testHelpParsing)
 {
-    ck_assert_int_eq(1,1);
+    PARSE_DATA dat;
+    SCODE status = SCODE_GEN_FAIL;
+    dat.state = START;
+    dat.cmd = NOCMD;
+    dat.folder = NULL;
+    dat.type = NULL;
+    dat.field = NULL;
+    dat.noteID = 0;
+    dat.noteIndex = -1;
+
+    status = singleParseLoop(&dat, "test");
+    ck_assert(dat.state == FAILED);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "all");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "a");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "notes");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "n");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "types");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "t");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "folder");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = HELP_CMD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "f");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
 }
 END_TEST
+
+// TODO: change when folders added
+START_TEST(testFolderAddParsing)
+{
+    PARSE_DATA dat;
+    SCODE status = SCODE_GEN_FAIL;
+    dat.state = FOLDER_ADD;
+    dat.cmd = NOCMD;
+    dat.folder = NULL;
+    dat.type = NULL;
+    dat.field = NULL;
+    dat.noteID = 0;
+    dat.noteIndex = -1;
+
+    status = singleParseLoop(&dat, "test");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = FOLDER_ADD;
+    dat.cmd = NOCMD;
+
+    status = singleParseLoop(&dat, "nofolder");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+}
+END_TEST
+
+// TODO: change when folders added
+START_TEST(testFolderRemoveParsing)
+{
+    PARSE_DATA dat;
+    SCODE status = SCODE_GEN_FAIL;
+    dat.state = FOLDER_REMOVE;
+    dat.cmd = NOCMD;
+    dat.folder = NULL;
+    dat.type = NULL;
+    dat.field = NULL;
+    dat.noteID = 0;
+    dat.noteIndex = -1;
+
+    status = singleParseLoop(&dat, "test");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert(dat.folder == NULL);
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+    dat.state = FOLDER_REMOVE;
+    dat.cmd = NOCMD;
+}
+END_TEST
+
+START_TEST(testFolderEditParsing)
+{
+    PARSE_DATA dat;
+    SCODE status = SCODE_GEN_FAIL;
+    dat.state = FOLDER_EDIT;
+    dat.cmd = NOCMD;
+    dat.folder = NULL;
+    dat.type = NULL;
+    dat.field = NULL;
+    dat.noteID = 0;
+    dat.noteIndex = -1;
+
+    status = singleParseLoop(&dat, "test");
+    ck_assert(dat.state == FOLDER_EDIT_NAME);
+    ck_assert_str_eq(dat.folder, "test");
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+
+    status = singleParseLoop(&dat, "test1");
+    ck_assert(dat.state == SUCCESS);
+    ck_assert_str_eq(dat.folder, "test");
+    ck_assert(dat.type == NULL);
+    ck_assert(dat.field == NULL);
+    ck_assert(dat.noteID == 0);
+    ck_assert(dat.noteIndex == -1);
+    ck_assert(status == SCODE_OK);
+}
 
 START_TEST(testArgumentParse)
 {
@@ -189,8 +385,11 @@ Suite* interface_suite(void)
 
     tcase_add_test(tc_core, testDetCommand);
     tcase_add_test(tc_core, testHandleStartState);
+    tcase_add_test(tc_core, testHelpParsing);
+    tcase_add_test(tc_core, testFolderAddParsing);
+    tcase_add_test(tc_core, testFolderRemoveParsing);
+    tcase_add_test(tc_core, testFolderEditParsing);
     tcase_add_test(tc_core, testHandleLeftovers);
-    tcase_add_test(tc_core, testSingleParseLoop);
     tcase_add_test(tc_core, testArgumentParse);
     suite_add_tcase(s, tc_core);
 
