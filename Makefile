@@ -44,8 +44,8 @@ clean:
 
 test: $(filter-out src/main.o, $(OBJS)) $(TOBJS)
 	$(CC) $(CFLAGS) $^ -o $(TBIN) $(CHECK)
-	./unit
 
 coverage:
-	make test
+	make
+	./unit
 	gcovr

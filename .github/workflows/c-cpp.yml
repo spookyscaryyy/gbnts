@@ -10,10 +10,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Intall libs
-      run: sudo apt-get install check python3 python3-pip && pip install gcovr
+      run: sudo apt-get install check python3 python3-pip valgrind && pip install gcovr
     - name: Build source
-      run: make
-    - name: Run Tests
       run: make test
+    - name: Run Tests
+      run: ./unit
+    - name: Look for memory leaks
+      run: valgrind ./unit
     - name: Show Coverage
       run: make coverage
