@@ -1,13 +1,13 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "folders.h"
 #include "scodes.h"
 
 bool isFolder(const char* folder)
 {
-    bool ret = false;
-    return ret;
+    return (0 == strcmp("folder", folder));
 }
 
 SCODE addFolder(const char* name)

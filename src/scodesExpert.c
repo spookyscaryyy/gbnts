@@ -29,17 +29,29 @@ void decodeScode(uint8_t* fileID, uint16_t* lineNo, int16_t* scode, SCODE code)
     *scode >>= 4;
 }
 
+
+void decodeScodePackage(DECODED_SCODE* scode, SCODE code)
+{
+    scode->lineNo = code & LINE_NO_MASK;
+    code >>= LINE_NO_SIZE;
+    scode->fileID = code & FILE_ID_MASK;
+    code >>= FILE_ID_SIZE;
+    scode->scode = code & SCODE_MASK;
+
+    /* this makes sure negative numbers work correctly */
+    scode->scode <<= 4;
+    scode->scode >>= 4;
+}
+
 void handleFailed(SCODE code)
 {
-    uint16_t lineNo = 0;
-    uint8_t fileID = 0;
-    int16_t scode = 0;
-    decodeScode(&fileID, &lineNo, &scode, code);
+    DECODED_SCODE scode;
+    decodeScodePackage(&scode, code);
 
     char filename[FILENAME_LENGTH];
     char err[ERR_MESSAGE_LENGTH];
 
-    switch(fileID)
+    switch(scode.fileID)
     {
         case(TEST_FILE):
             snprintf(filename, FILENAME_LENGTH, "test file");
@@ -61,7 +73,7 @@ void handleFailed(SCODE code)
             break;
     }
 
-    switch(scode)
+    switch(scode.scode)
     {
         case(SCODE_GEN_FAIL):
             snprintf(err, ERR_MESSAGE_LENGTH, "Execution failed");
@@ -83,7 +95,7 @@ void handleFailed(SCODE code)
             break;
     }
     printf("Note failed in %s at line %d with message: %s\n",
-            filename, lineNo, err);
+            filename, scode.lineNo, err);
 }
 
 /* Reads a status code and prints a mesasge associated with it */

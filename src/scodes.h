@@ -13,6 +13,13 @@ typedef int32_t SCODE;
  * [0-13]    LineNumber
  */
 
+typedef struct
+{
+    int16_t scode;
+    uint16_t lineNo;
+    uint8_t  fileID;
+} DECODED_SCODE;
+
 /* Macos/Definitions */
 #define SUCCESS(status) status >= 0
 #define FAILED(status) status < 0
@@ -38,6 +45,7 @@ typedef int32_t SCODE;
 /* Functions */
 int handleScode(SCODE code);
 void decodeScode(uint8_t* fileID, uint16_t* lineNo, int16_t* scode, SCODE code);
+void decodeScodePackage(DECODED_SCODE* scode, SCODE code);
 SCODE _buildCode(uint8_t fileID, uint16_t lineNo, int16_t scode);
 
 #endif
