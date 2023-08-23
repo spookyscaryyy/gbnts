@@ -386,7 +386,7 @@ END_TEST
 
 START_TEST(testArgumentParse)
 {
-    ck_assert_int_eq(1,1);
+
 }
 END_TEST
 
