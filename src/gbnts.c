@@ -10,7 +10,7 @@
 
 /* Globals */
 const char* COMMAND_LIST[COMMAND_LIST_SIZE] =
-{"ls", "a", "r", "e", "h", "t", "p"};
+{"ls", "a", "r", "e", "h", "p"};
 
 void showFolderHelp()
 {
@@ -27,7 +27,7 @@ void showNoteHelp()
     printf("gbnts [folder name] {note cmd}\n"
             "note cmds:\n"
             "    ls - lists all notes in folder, also if no note cmd given\n"
-            "    a  - creates a new note with it's given fields\n"
+            "    a  - creates a new note and assigns an ID\n"
             "    r  - removes a note by it's ID\n"
             "    e  - edit a note by it's ID\n");
 }
@@ -37,7 +37,6 @@ void showCommandHelp()
     printf("gbnts [cmd] {help}\n"
             "cmds:\n"
             "    h  - shows all help or the selected help\n"
-            "    t  - lists all possible note types and their fields\n"
             "    p  - removes all empty folders\n");
 }
 

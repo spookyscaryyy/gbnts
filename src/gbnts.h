@@ -9,14 +9,13 @@
 #define PRINT_NOTE_HELP     'n'
 #define PRINT_FOLDER_HELP   'f'
 
-#define COMMAND_LIST_SIZE   7
+#define COMMAND_LIST_SIZE   6
 #define LIST_COMMAND        0
 #define ADD_COMMAND         1
 #define REMOVE_COMMAND      2
 #define EDIT_COMMAND        3
 #define HELP_COMMAND        4
-#define TYPE_COMMAND        5
-#define PRUNE_COMMAND       6
+#define PRUNE_COMMAND       5
 
 /* Data Structures */
 typedef enum {
